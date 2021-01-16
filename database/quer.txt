@@ -1,0 +1,37 @@
+select c.id_solid,c.class_induk as name,temp.id_class as bclass , temp.method
+from tbl_method u
+inner join (select * from tbl_method) temp ON temp.id_class = u.id_induk
+inner join tbl_class c on c.id_class = u.id_class
+group by c.class_induk,temp.method
+
+select d.id_solid,temp.id_class as bclass,d.class_induk , m.id_class as aclass,d.name_class as name,m.method
+from tbl_method m
+inner join (select * from tbl_method) temp ON temp.id_class = m.id_induk
+left join tbl_class d on d.id_class = m.id_class
+group by m.id_class,m.method
+
+select id_solid,class,subclass,
+sum(case when la.isNME = 1 then 1 else 0 end) nme,
+sum(case when la.isNMO = 1 then 1 else 0 end) nmo
+from
+(select d.id_solid,lamp.id_class as id_class,d.class_induk as class , m.id_class as id_subclass,d.name_class as subclass,m.method, m.isNME , m.isNMO
+from tbl_method m
+inner join tbl_method lamp ON lamp.id_class = m.id_induk
+inner join tbl_class d on d.id_class = m.id_class
+where d.id_solid = 'Solidtv9xl467ez'
+group by m.id_class,m.method) la
+group by id_subclass
+
+//last
+
+select id_solid,class,subclass,
+sum(case when la.isNME = 1 and la.isNMO = 0 then 1 else 0 end) nme,
+sum(case when la.isNME = 0 and la.isNMO = 2 then 1 else 0 end) nmo
+from
+(select d.id_solid,lamp.id_class as id_class,d.class_induk as class , m.id_class as id_subclass,d.name_class as subclass,m.method, m.isNME , m.isNMO
+from tbl_method m
+inner join tbl_method lamp ON lamp.id_class = m.id_induk
+inner join tbl_class d on d.id_class = m.id_class
+where d.id_solid = 'Solid1s3ho045bx'
+group by m.id_class,m.method) la
+group by id_subclass
