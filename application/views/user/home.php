@@ -309,9 +309,9 @@ function lsp() {
             $.each(data[0].lsp,function(lspi,lspv){
                 // console.log(lspv);
                 if (lspv.clsp == 'TIDAK') {
-                    var vclsp = '<span class="btn btn-danger">TIDAK</span>';
+                    var vclsp = '<span class="btn-danger">TIDAK</span>';
                 } else {
-                    var vclsp = '<span class="btn btn-success">YA</span>';
+                    var vclsp = '<span class="btn-success">YA</span>';
                 }
                 $('#bodylsp').append('<tr><td>'+lspv.class+'</td><td>'+lspv.nmik+'</td><td>'+lspv.nmia+'</td><td>'+lspv.subclass+'</td><td>'+lspv.nme+'</td><td>'+lspv.nmo+'</td><td>'+vclsp+'</td></tr>')
 

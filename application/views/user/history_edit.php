@@ -13,7 +13,7 @@
                 <li class="breadcrumb-item active">History Detail <?php echo $id; ?></li>
             </ol>
         </div>
-        <a href="<?php echo base_url('user/history_edit/updatesolid/'.$id)?>">
+        <a href="<?php echo base_url('user/dashboard')?>">
         <button class="btn btn-success m-b-10" type="button" onclick=""><i class="fa fa-save"></i> Simpan</button>
         </a>
     </div>
@@ -230,6 +230,11 @@ function isp() {
             // console.log(data);
 
             $.each(data[0]['item'],function(ispi,ispv){
+                if (ispv.isp == 'TIDAK') {
+                    var isp = '<span class="btn-danger">TIDAK</span>';
+                } else {
+                    var isp = '<span class="btn-success">YA</span>';
+                }
                 $('#bodyisp').append('<tr><td>'+ispv.name_class+'</td><td>'+ispv.srp+'</td><td>'+ispv.lsp+'</td><td>'+ispv.isp+'</td></tr>')
             });
 
@@ -260,6 +265,11 @@ function dip() {
 
             $.each(data[0].dip,function(dipi,dipv){
                 // console.log(dipv);
+                 if (dipv.cdip == 'TIDAK') {
+                    var cdip = '<span class="btn-danger">TIDAK</span>';
+                } else {
+                    var cdip = '<span class="btn-success">YA</span>';
+                }
                 $('#bodydip').append('<tr><td>'+dipv.dcc+'</td><td>'+dipv.nama+'</td><td>'+dipv.status+'</td><td>'+dipv.cdip+'</td></tr>')
             });
 
@@ -290,9 +300,9 @@ function lsp() {
             $.each(data[0].lsp,function(lspi,lspv){
                 // console.log(lspv);
                 if (lspv.clsp == 'TIDAK') {
-                    var vclsp = '<span class="btn btn-danger">TIDAK</span>';
+                    var vclsp = '<span class="btn-danger">TIDAK</span>';
                 } else {
-                    var vclsp = '<span class="btn btn-success">YA</span>';
+                    var vclsp = '<span class="btn-success">YA</span>';
                 }
                 $('#bodylsp').append('<tr><td>'+lspv.class+'</td><td>'+lspv.nmik+'</td><td>'+lspv.nmia+'</td><td>'+lspv.subclass+'</td><td>'+lspv.nme+'</td><td>'+lspv.nmo+'</td><td>'+vclsp+'</td></tr>')
 
@@ -334,6 +344,11 @@ function ocp() {
         if(data != 'empty') {
 
             $.each(data.item,function(ind,val){
+                if (val.cocp == 'TIDAK') {
+                    var cocp = '<span class="btn-danger">TIDAK</span>';
+                } else {
+                    var cocp = '<span class="btn-success">YA</span>';
+                }
                 // console.log(val);
                 $('#bodyocp').append('<tr><td>'+val.name_class+'</td><td>'+val.noc+'</td><td>'+val.name_parent+'</td><td>'+val.cocp+'</td></tr>')
             });
@@ -400,7 +415,11 @@ function srp() {
                 $('.srpnom-'+ym).text('NOM : '+datam.nom);
                 $('.srpt-'+ym).text('|T| : '+datam.t);
                 $('.srphasil-'+ym).text('CAMC'+datam.name_class+' = (∑ '+datam.jml_nom+') / '+datam.nom+'x'+datam.t+' = '+datam.jml_nom+'/'+datam.nom*datam.t+' = '+datam.hasil);
-                
+                if (datam.ksrp == 'TIDAK') {
+                    var ksrp = '<span class="btn-danger">TIDAK</span>';
+                } else {
+                    var ksrp = '<span class="btn-success">YA</span>';
+                }
                 if(datam.hasil > 0.35){
                     var ksrp = 'YA';
                 } else {
@@ -443,16 +462,17 @@ function showclass(id) {
     $('#fieldclasslabel').text('Show id : '+id);
     $('.div_classfield').html('');
     $('.div_classmethod').html('');
+    var idsolid =$('#id_solid').val();
     $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/field',function(data){
         $.each(data,function(x,y){
             // console.log(y.name_field);
             $('.div_classfield').append('<b class="efield'+y.id_field+'">'+y.id_field+'</b> - '+y.name_field+' : '+y.typedata+' | <a href="<?php echo base_url('user/history_edit/updateField/') ?>'+y.id_field+'" class="btn btn-info btn-xs">edit</a></br>');
         })
     })
-    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/method',function(data){
+    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/method/'+idsolid,function(data){
         $.each(data,function(x,y){
             console.log(y);
-            $('.div_classmethod').append('<b class="enom'+y.id_nom+'">'+y.id_nom+'</b> - '+y.method+' ( '+y.param+' )| <a href="<?php echo base_url('user/history_edit/updateMethod/') ?>'+y.id_nom+'" class="btn btn-info btn-xs">edit</a></br>');
+            $('.div_classmethod').append('<b class="enom'+y.id_nom+'">'+y.id_nom+'</b> - '+y.method+' ( '+y.param+' )| <a href="<?php echo base_url('user/history_edit/updateMethod/') ?>'+y.id_nom+'/'+idsolid+'" class="btn btn-info btn-xs">edit</a></br>');
         })
     })
 }
@@ -581,18 +601,19 @@ function showsubclass(id) {
     $('#fieldsubclasslabel').text('Show id : '+id);
     $('.div_subclassfield').html('');
     $('.div_subclassmethod').html('');
-    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/field',function(data){
+    var idsolid =$('#id_solid').val();
+    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/field/'+idsolid,function(data){
         $.each(data,function(x,y){
             // console.log(y.name_field);
                 
-            $('.div_subclassfield').append(' - '+y.name_field+' : '+y.typedata+' | <a href="<?php echo base_url('user/history_edit/updateField/') ?>'+y.id_field+''+y.id_solid+'" class="btn btn-info btn-xs">edit</a></br>');
+            $('.div_subclassfield').append(' - '+y.name_field+' : '+y.typedata+' | <a href="<?php echo base_url('user/history_edit/updateField/') ?>'+y.id_field+'/'+y.id_solid+'" class="btn btn-info btn-xs">edit</a></br>');
 
         })
     })
-    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/method',function(data){
+    $.getJSON('/solid/user/history_edit/getclassinfo/'+id+'/method/'+idsolid,function(data){
         $.each(data,function(x,y){
             // console.log(y.method);
-            $('.div_subclassmethod').append(' - '+y.method+' ( '+y.param+')| <a href="<?php echo base_url('user/history_edit/updateMethod/') ?>'+y.id_nom+''+y.id_solid+'" class="btn btn-info btn-xs">edit</a></br>');
+            $('.div_subclassmethod').append(' - '+y.method+' ( '+y.param+')| <a href="<?php echo base_url('user/history_edit/updateMethod/') ?>'+y.id_nom+'/'+y.id_solid+'" class="btn btn-info btn-xs">edit</a></br>');
         })
     })
 }

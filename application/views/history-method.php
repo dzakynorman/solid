@@ -75,7 +75,7 @@
                                         <label class="control-label text-right col-md-3"></label>
                                         <div class="controls">
                                             <button type="submit" class="btn btn-success">Update</button>
-                                            <a href="<?php echo base_url('user/history_edit/edit/'.$method->id_solid) ?>" class="btn btn-danger">Cancel</a>
+                                            <button onclick="goBack()">Go Back</button>
                                         </div>
                                     </div>
                                 </div>
@@ -94,3 +94,8 @@
     <!-- End Page Content -->
 
 </div>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>

@@ -11,7 +11,7 @@ class History_edit extends CI_Controller {
     
     public function edit($id){
        
-        // echo $id_solid;
+        
         $data = array();
         $data['id'] = $id;
         $data['page_title'] = 'History';
@@ -143,7 +143,7 @@ class History_edit extends CI_Controller {
 
     public function updateMethod() {
         $id = $this->uri->segment(4);
-        $id_solid = $this->uri->segment(5);
+        $idsolid = $this->uri->segment(5);
         if ($_POST) {
 
                 $data = array(
